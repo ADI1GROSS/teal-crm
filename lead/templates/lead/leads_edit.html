@@ -1,0 +1,46 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Edit Lead{% endblock %}
+
+{% block content %}
+{% load custom_filters %}
+
+<div class="py-6 px-6">
+  <h1 class="text-xl">עריכת לקוח</h1>
+
+  <form method="post" action=".">
+    {% csrf_token %}
+    <div class="mb-6 bg-white shadow rounded-xl p-4">
+      <h2 class="text-lg font-semibold mb-3">פרטי לקוח</h2>
+      {{ form.as_p }}
+    </div>
+
+    <div class="mb-6 bg-white shadow rounded-xl p-4">
+      <h2 class="text-lg font-semibold mb-3">חבילה בהתאמה אישית</h2>
+
+      {% for key, info in fields.items %}
+        <div class="form-group mb-4">
+          <label for="{{ key }}" class="block font-medium mb-1">{{ info.label }}</label>
+
+          {% if info.type == "boolean" %}
+            <select name="{{ key }}" id="{{ key }}" class="border p-2 rounded w-full">
+              <option value="">בחר...</option>
+              <option value="True" {% if info.value == "True" %}selected{% endif %}>כן</option>
+              <option value="False" {% if info.value == "False" %}selected{% endif %}>לא</option>
+            </select>
+          {% else %}
+            <input 
+              type="{{ info.type|default:'text' }}" 
+              name="{{ key }}" 
+              id="{{ key }}" 
+              class="form-control p-2 w-full border rounded"
+              value="{{ info.value|default:'' }}">
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+
+    <button class="py-4 px-8 bg-teal-500 text-white rounded-xl">אישור עריכה</button>
+  </form>
+</div>
+{% endblock %}

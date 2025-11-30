@@ -1,0 +1,70 @@
+{% extends 'core/base.html' %}
+
+{% block title %}עריכת חבילת עסקה{% endblock %}
+
+{% block content %}
+<div class="py-6 px-6">
+  <h1 class="text-2xl font-semibold mb-4">עריכת חבילת עסקה</h1>
+  <p class="text-gray-400 text-sm mb-10 italic">
+    אפשר להוסיף כמה סוגי פרטים:
+    <br> •	טקסט כלשהו
+    <br> •	מספר כלשהו
+    <br> •	שדה של כן/לא לדוגמא: האם כולל אלבום
+    <br>•	שדה עם כמה אפשרויות בחירה כמו צבע-אדום,כחול,ירוק,צהוב    
+  </p>
+
+  <form method="post" action="{% url 'edit_deal_template' field_name %}">
+    {% csrf_token %}
+
+    <div class="grid grid-cols-3 gap-4">
+
+      <!-- LABEL -->
+      <input type="text" name="label" value="{{ field.label }}" class="border p-2 rounded">
+
+      <!-- TYPE -->
+      <select name="type" id="field-type" class="border p-2 rounded" onchange="toggleOptionsField()">
+        <option value="string"  {% if field.type == 'string' %}selected{% endif %}>טקסט</option>
+        <option value="number"  {% if field.type == 'number' %}selected{% endif %}>מספר</option>
+        <option value="boolean" {% if field.type == 'boolean' %}selected{% endif %}>כן/לא</option>
+        <option value="choice"  {% if field.type == 'choice' %}selected{% endif %}>בחירה מרובה</option>
+      </select>
+
+      <!-- DEFAULT / BOOLEAN -->
+      {% if field.type == "boolean" %}
+      <select name="default" class="border p-2 rounded">
+        <option value="True"  {% if field.default == "True" %}selected{% endif %}>כן</option>
+        <option value="False" {% if field.default == "False" %}selected{% endif %}>לא</option>
+      </select>
+
+      {% else %}
+
+      <!-- CHOICE OPTIONS -->
+      <div id="choices-field" style="display:none;" class="col-span-3">
+        <label>אפשרויות (מופרדות בפסיקים):</label>
+        <input type="text" name="choices"
+               value="{% if field.type == 'choice' %}{{ field.options|join:', ' }}{% endif %}"
+               class="border p-2 rounded w-full"
+               placeholder="אפשרות1, אפשרות2, אפשרות3">
+      </div>
+
+      <!-- DEFAULT VALUE -->
+      <input type="text" name="default" value="{{ field.default }}"
+             class="border p-2 rounded" placeholder="ערך דיפולט">
+
+      {% endif %}
+    </div>
+
+    <button class="mt-4 py-2 px-6 bg-teal-500 text-white rounded-xl">ערוך</button>
+  </form>
+</div>
+
+<script>
+function toggleOptionsField() {
+  const typeSelect = document.getElementById('field-type');
+  const choicesDiv = document.getElementById('choices-field');
+  choicesDiv.style.display = typeSelect.value === 'choice' ? 'block' : 'none';
+}
+document.addEventListener("DOMContentLoaded", toggleOptionsField);
+</script>
+
+{% endblock %}

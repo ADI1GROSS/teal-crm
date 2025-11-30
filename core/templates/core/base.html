@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+
+<html lang="he" dir="rtl">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+       
+        {% load static %}
+        <script src="https://cdn.tailwindcss.com"></script>
+
+        <title> {% block title %}{% endblock%}</title>
+    </head>
+    <body>
+        <nav class="py-6 px-6 flex justify-between" 
+        style="background-color: rgb(255, 228, 225);">
+        <a href="/" class="text-4xl font-Cursive tracking-[0.25em] text-gray-800 uppercase hover:text-teal-600 transition">
+            <span class="font-light">MAZAL</span>-<span class="font-bold italic">TOV</span>
+          </a>
+          
+
+            <div class="flex flex-wrap gap-2 justify-end"> 
+                
+                <a href="{% url 'about' %}" class="py-4 px-6 rounded-xl text-white"
+                style="background-color: rgb(135, 236, 250);">אודות</a>
+                {% if request.user.is_authenticated %}
+                    
+                    <a href="{% url 'leads_list' %}" class="py-4 px-6 rounded-xl text-white"
+                    style="background-color: rgb(150, 178, 235);"> רשימת לקוחות</a>
+                    <a href="{% url 'deal_list' %}" class="py-4 px-6 rounded-xl text-white"
+                    style="background-color: rgb(130, 157, 238);">חבילת העסקה</a>
+                    <a href="{% url 'userprofile:edit_profile' %}"class="py-4 px-6 rounded-xl text-white"
+                    style="background-color: rgb(152, 130, 238);">👤{{request.user.username}}</a>
+                    <a href="{% url 'logout' %}" class="py-4 px-6 rounded-xl text-white"
+                    style="background-color: rgb(180, 130, 238);">התנתק</a>
+                    
+
+                
+                {% else %}
+                    <a href="{% url 'login' %}" class="py-4 px-6 bg-teal-600 rounded-xl text-white"> התחבר</a>
+                    <a href="{% url 'signup' %}" class="py-4 px-6 bg-teal-400 rounded-xl text-white">הרשם</a>
+                {% endif %}
+            </div>
+        </nav>
+
+        {% if messages %}
+             <div class="py-6 px-6">
+                {% for message in messages %}
+                    <div class="py-4 px-4 bg-teal-300 text-white rounded-xl">
+                        {{message}}
+                    </div>
+                {% endfor %}
+             </div>
+                
+        {% endif %}
+
+        {% block content %}
+        {% endblock %}
+
+        <footer class="py-8 text-center bg-gray-200">
+            <p class="text-xs text-gray-700">Copyright (c) 2025 - MANAGER </p>
+        </footer>
+
+        <div class="hidden">
+            bg-sky-200 bg-sky-300 bg-sky-400 bg-sky-500
+            bg-purple-200 bg-purple-300 bg-purple-400 bg-purple-500
+        </div>
+    </body>
+</html>

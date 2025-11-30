@@ -1,0 +1,149 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Add Lead{%endblock%}
+
+{% block content %}
+    <div class="py-8 px-8 space-y-8">
+
+        <h1 class="text-2xl font-bold text-center mb-6">
+           {{ lead.bride_side }} - {{ lead.groom_side }}
+        </h1>
+      
+        
+        <div class="bg-gray-100 rounded-xl shadow p-6">
+          <h2 class="text-xl font-semibold mb-4 border-b border-gray-300 pb-2">פרטי האירוע</h2>
+      
+          <div class="grid grid-cols-2 gap-x-8 gap-y-4">
+            <div>
+              <p class="font-semibold">סטטוס עסקי:</p>
+              <p>{{ lead.get_status_display }}</p>
+            </div>
+      
+            <div>
+              <p class="font-semibold">סטטוס תשלום:</p>
+              <p>{{ lead.get_payment_status_display }}</p>
+            </div>
+
+            <div>
+              <p class="font-semibold">אמצעי תשלום:</p>
+              <p>{{ lead.get_payment_method_display }}</p>
+            </div>
+
+            <div>
+              <p class="font-semibold">יום האירוע:</p>
+              <p>{{ lead.get_day_display }}</p>
+            </div>
+
+            <div>
+              <p class="font-semibold">שעת האירוע:</p>
+              <p>{{ lead.get_hour_display }}</p>
+            </div>
+      
+            <div>
+              <p class="font-semibold">תאריך עברי:</p>
+              <p>{{ lead.hebrew_day }} {{ lead.get_hebrew_month_display }} {{ lead.hebrew_year }}</p>
+            </div>
+      
+            <div>
+              <p class="font-semibold">תאריך לועזי:</p>
+              <p>{{ lead.date_gregorian }}</p>
+            </div>
+      
+            <div>
+              <p class="font-semibold">אולם:</p>
+              <p>{{ lead.hall }}</p>
+            </div>
+      
+            <div>
+              <p class="font-semibold">כתובת אולם:</p>
+              <p>{{ lead.address }}</p>
+            </div>
+      
+            <div class="col-span-2">
+              {% if lead.has_additional_crew %}
+                 <p class="font-semibold">צלמת:</p>
+                 <p>{{ lead.additional_crew }}</p>
+              {% else %}
+                 <p>לא ביקשו צלמת</p>
+              {% endif %}
+            </div>
+      
+            <div>
+              <p class="font-semibold">וידאו:</p>
+              <p>{{ lead.video }}</p>
+            </div>
+
+            <div>
+              <p class="font-semibold">עוזר:</p>
+              <p>{{ lead.assistent }}</p>
+            </div>
+
+            <div class="col-span-2">
+              <p class="font-semibold">פרטים נוספים:</p>
+              <p>{{ lead.additional_details |default:"אין פרטים נוספים" }}</p>
+            </div>
+          </div>
+        </div>
+        {% if lead.custom_fields %}
+        <div class="bg-gray-100 rounded-xl shadow p-6 mt-6">
+          <h2 class="text-xl font-semibold mb-4 border-b border-gray-300 pb-2">חבילת עסקה</h2>
+      
+          <div class="grid grid-cols-2 gap-x-8 gap-y-4">
+            {% for key, field in fields.items %}
+              <div>
+                 <p class="font-semibold">{{ field.label }}:</p>
+                 <p>{{ field.value|default:"—" }}</p>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+        <div class="bg-gray-100 rounded-xl shadow p-6 mt-6">
+          <h2 class="text-xl font-semibold mb-4 border-b border-gray-300 pb-2">אנשי קשר</h2>
+        
+          {% if contacts %}
+            {% for contact in contacts %}
+              <div class="border rounded-lg p-4 mb-4 bg-white flex justify-between items-start">
+                <div>
+                     <p><strong>שם פרטי:</strong> {{ contact.first_name }}</p>
+                     <p><strong>שם משפחה:</strong> {{ contact.second_name }}</p>
+                     <p><strong>טלפון:</strong> {{ contact.phone }}</p>
+                     <p><strong>אימייל:</strong> {{ contact.email|default:"—" }}</p>
+                     <p><strong>כתובת:</strong> {{ contact.concat_address|default:"—" }}</p>
+                     <p><strong>קשר לבעלי השמחה:</strong> {{ contact.role|default:"—" }}</p>
+                </div>
+                <div>
+                     <a href="{% url 'delete_contact' contact.id %}" 
+                      onclick="return confirm('האם למחוק את איש הקשר?')"
+                      class="text-red-600 hover:text-red-800 font-semibold">
+                      מחק ✖
+                    </a>
+                </div>
+                <div>
+                    <a href="{% url 'contact_edit' contact.id %}" 
+                     class="text-green-600 hover:text-green-800 font-semibold">
+                     ערוך
+                    </a>
+                </div>
+              </div>
+            {% endfor %}
+          {% else %}
+            <p>לא קיימים אנשי קשר ללקוח זה.</p>
+          {% endif %}
+        </div>
+              
+        
+        <hr class="my-4">
+
+        <a href="{% url 'leads_delete' lead.id%}"
+        onclick="return confirm('האם למחוק את הלקוח?')"
+        class="py-2 px-4 rounded-xl bg-red-500 text-white">מחק לקוח
+        </a>
+        <a href="{% url 'leads_edit' lead.id %}" class="py-2 px-4 rounded-xl bg-teal-500 text-white">ערוך לקוח</a>
+        <a href="{% url 'add_contact' lead.id%}" class="py-2 px-4 rounded-xl bg-teal-300 text-white">הוסף איש קשר</a>
+
+
+        <hr class="my-4">
+        <a href="{% url 'leads_list' %}" class="py-2 px-4 rounded-xl bg-gray-500 text-white">חזור לרשימת הלקוחות</a>
+    </div>
+{%endblock%}

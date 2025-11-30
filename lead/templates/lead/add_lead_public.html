@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>הוסף לקוח | MAZAL TOV CRM</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        
+        :root {
+            --color-primary: #C8AE71; 
+            --color-secondary: #0A0A0A; 
+            --color-background-light: #FBFBFB; 
+            --color-accent: #F0D782; 
+        }
+
+        body {
+            font-family: "Georgia", "Times New Roman", serif;
+            direction: rtl;
+            text-align: right;
+        }
+
+        .django-form p {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 1rem;
+        }
+        .django-form label {
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+            color: var(--color-secondary); 
+        }
+        .django-form input:not([type="checkbox"]):not([type="radio"]), 
+        .django-form select, 
+        .django-form textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db; 
+            border-radius: 0.5rem; 
+            background-color: var(--color-background-light); 
+            transition: all 0.2s;
+        }
+        
+        .django-form input:not([type="checkbox"]):not([type="radio"]):focus,
+        .django-form select:focus,
+        .django-form textarea:focus {
+            border-color: var(--color-primary) !important; 
+            box-shadow: 0 0 0 1px var(--color-primary), 0 0 0 3px rgba(139, 119, 92, 0.2) !important; 
+            background-color: #ffffff;
+        }
+
+        .django-form input[type="checkbox"] {
+            border-color: #d1d5db; 
+            color: var(--color-primary); 
+        }
+        
+        .django-form input[type="checkbox"]:focus {
+            --tw-ring-color: var(--color-primary); 
+            box-shadow: 0 0 0 1px var(--color-primary), 0 0 0 3px rgba(139, 119, 92, 0.2);
+        }
+
+        .checkbox-field label {
+            display: inline-flex;
+            align-items: center;
+            font-weight: normal;
+        }
+        .checkbox-field input[type="checkbox"] {
+            margin-left: 0.5rem; 
+        }
+
+    </style>
+</head>
+
+<body class="min-h-screen" style="background-color: #F8F8F8;"> <nav class="py-4 px-6 flex justify-center shadow-lg"
+        style="background-color: #FFFFFF; border-bottom: 1px solid #E0E0E0;">
+        <div class="text-3xl font-bold tracking-wider" style="color: var(--color-secondary);">
+            <span style="color: var(--color-primary);">MAZAL</span>
+            <span class="italic">TOV</span>
+        </div>
+    </nav>
+
+    <main class="flex-grow flex justify-center items-start py-12 px-4">
+        <div class="w-full max-w-4xl">
+
+            <h1 class="text-4xl font-extrabold mb-10 text-center" style="color: var(--color-secondary);">
+                טופס מילוי פרטים
+            </h1>
+            <p class="text-2xl font-medium mb-10 text-center" style="color: #6D6D6D; font-style: italic;">
+                מזל טוב על האירוסים! אנא מלאו את הפרטים. 
+                <span class="block mt-2 text-xl">
+                    שימו לב: מילוי טופס זה אינו מהווה אישור סופי לעסקה או שמירת תאריך.
+                </span>
+            </p>
+
+            <form method="post" action="." 
+                class="django-form bg-white shadow-2xl p-8 lg:p-12 rounded-2xl border-t-4"
+                style="border-color: var(--color-primary); border-top-width: 6px;"> {% csrf_token %}
+
+                <div class="mb-10 p-5 border rounded-xl shadow-inner" style="background-color: #FCFCFC; border-color: #E0E0E0;">
+                    <h2 class="text-3xl font-bold mb-5 pb-3" style="color: var(--color-primary); border-bottom: 2px solid #E0E0E0;">
+                        פרטי החתן והכלה
+                    </h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="p-6 rounded-lg shadow-lg" style="background-color: #FFFFFF; border: 1px solid #F0F0F0;">
+                            <h3 class="text-xl font-bold mb-4" style="color: #6A0000;">👰 כלה</h3> {{ bride_form.as_p }}
+                        </div>
+                    
+                        <div class="p-6 rounded-lg shadow-lg" style="background-color: #FFFFFF; border: 1px solid #F0F0F0;">
+                            <h3 class="text-xl font-bold mb-4" style="color: #00006A;">🤵 חתן</h3> {{ groom_form.as_p }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-10 p-5 border rounded-xl shadow" style="background-color: #FFFFFF; border-color: #DCDCDC;">
+                    <h2 class="text-2xl font-bold mb-6 pb-2" style="color: var(--color-secondary); border-bottom: 1px solid #DCDCDC;">
+                        פרטי האירוע
+                    </h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
+                        
+                        <div class="md:col-span-2 flex flex-col md:flex-row gap-4 mb-4">
+                            <label class="block font-semibold mb-1" style="color: var(--color-secondary);">תאריך עברי:</label>
+                            <div class="grid grid-cols-3 gap-4 mt-2">
+                                <div>
+                                    {{ form.hebrew_day.label_tag }}
+                                    {{ form.hebrew_day }}
+                                </div>
+                                <div>
+                                    {{ form.hebrew_month.label_tag }}
+                                    {{ form.hebrew_month }}
+                                </div>
+                                <div>
+                                    {{ form.hebrew_year.label_tag }}
+                                    {{ form.hebrew_year }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex-1">
+                            <label for="{{ form.date_gregorian.id_for_label }}" class="block font-semibold mb-1" style="color: var(--color-secondary);">תאריך לועזי:</label>
+                            {{ form.date_gregorian }}
+                        </div>
+                        
+                        <div class="md:col-span-2 pt-4 border-t mt-4 flex flex-col md:flex-row gap-4 mb-4" style="border-color: #E0E0E0;">
+                            <div class="flex-1 pt-4 ">
+                                <label for="{{ form.groom_side.id_for_label }}" class="block font-semibold mb-1" style="color: var(--color-secondary);">משפחת החתן:</label>
+                                {{ form.groom_side }}
+                            </div>
+                            <div class="flex-1 pt-4 ">
+                                <label for="{{ form.bride_side.id_for_label }}" class="block font-semibold mb-1" style="color: var(--color-secondary);">משפחת הכלה:</label>
+                                {{ form.bride_side }}
+                            </div>
+                        </div>
+
+                        <div class="col-span-1">
+                            <label for="{{ form.hall.id_for_label }}" class="block font-semibold mb-1" style="color: var(--color-secondary);">שם אולם/גן אירועים:</label>
+                            {{ form.hall }}
+                        </div>
+                        
+                        <div class="col-span-1">
+                            <label for="{{ form.address.id_for_label }}" class="block font-semibold mb-1" style="color: var(--color-secondary);">כתובת האולם:</label>
+                            {{ form.address }}
+                        </div>
+
+                        <div class="md:col-span-2 pt-4 border-t mt-4" style="border-color: #E0E0E0;">
+                            <label for="{{ form.has_additional_crew.id_for_label }}" class="block font-semibold mb-1" style="color: var(--color-secondary);">מעוניינים בצלמת נוספת?</label>
+                            {{ form.has_additional_crew }}
+                        </div>
+
+                        <div class="md:col-span-2">
+                            <label for="{{ form.payment_method.id_for_label }}" class="block font-semibold mb-1" style="color: var(--color-secondary);">אמצעי תשלום למקדמה:</label>
+                            {{ form.payment_method }}
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <div class="mb-10 p-5 border rounded-xl shadow" style="background-color: #FFFFFF; border-color: #DCDCDC;">
+                    <h2 class="text-2xl font-bold mb-6 pb-2" style="color: var(--color-secondary); border-bottom: 1px solid #DCDCDC;">
+                        הוסף אנשי קשר נוספים
+                    </h2>
+                    
+                    {{ formset.management_form }}
+                    
+                    {% for contact_form in formset %}
+                        <div class="border p-4 rounded-xl mb-4 shadow-sm" style="background-color: #F8F8F8; border-color: #E0E0E0;">
+                            <h3 class="font-medium text-lg mb-3 border-b pb-2" style="color: var(--color-secondary); border-color: #DCDCDC;">
+                                📞 איש קשר {{ forloop.counter }}
+                            </h3>
+                            {{ contact_form.as_p }}
+                        </div>
+                    {% endfor %}
+                </div>
+
+                {% if userprofile.regulations_document %}
+                    <div class="mt-10 p-6 rounded-xl border shadow-md text-center" style="background-color: #FFFBEB; border-color: var(--color-accent);"> <h2 class="text-xl font-bold mb-4" style="color: var(--color-primary);">אישור התקנון</h2>
+
+                        <a href="{{ userprofile.regulations_document.url }}" target="_blank"
+                        class="inline-block px-8 py-3 rounded-full font-semibold shadow-lg transition duration-300 transform hover:scale-105"
+                        style="background-color: var(--color-primary); color: white;">
+                            📄 לחץ לצפייה בתקנון
+                        </a>
+
+                        <div class="mt-6 flex items-center justify-center gap-3">
+                            <input type="checkbox" id="agree" name="agree" required 
+                                class="h-5 w-5 border-gray-300 rounded">
+                            <label for="agree" class="font-medium text-lg cursor-pointer" style="color: var(--color-secondary);">
+                                אני מאשר/ת שקראתי והסכמתי לתקנון
+                            </label>
+                        </div>
+
+                    </div>
+                {% endif %}
+
+                <button type="submit" 
+                    class="w-full mt-10 p-4 rounded-xl font-extrabold text-xl shadow-xl transition transform hover:scale-[1.01] duration-300"
+                    style="background-color: var(--color-primary); color: white;">
+                    הוסף לקוח
+                </button>
+
+            </form>
+        </div>
+    </main>
+
+</body>
+</html>

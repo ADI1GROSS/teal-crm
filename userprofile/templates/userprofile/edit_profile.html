@@ -1,0 +1,35 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<div class="py-10 px-6 max-w-3xl mx-auto text-center">
+    <h1 class="text-4xl font-serif text-grey-500 mb-6"> שלום {{request.user.username}} </h1>
+    <p class="text-gray-400 text-sm mb-10 italic">
+      מערכת MAZAL-TOV מאפשרת ללקוחות למלא פרטים בעצמם — כדי לחסוך זמן ולהבטיח שהכול מסודר מראש 📸
+  </p>
+    <p class="text-xl font-serif text-grey-400 mb-6">קישור להזמנת לקוחות:</p>
+    {% with full_link=request.build_absolute_uri|slice:":-1"|add:request.path|cut:request.path|add:request.get_host|add:"/"|add:"add-lead-public/"|add:request.user.userprofile.invite_token|add:"/" %}
+  
+    <div style="margin-top: 10px; padding: 10px; background-color: #f9f9f9; border-radius: 8px; border: 1px solid #ddd;">
+      <a href="{% url 'add_lead_public' request.user.userprofile.invite_token %}" target="_blank" style="display: block; color: #007bff; text-decoration: none; word-break: break-all; direction: ltr;">
+         {{ request.build_absolute_uri|slice:":-1" }}{% url 'add_lead_public' request.user.userprofile.invite_token %}
+      </a>
+    </div>
+  
+    <p style="font-size: 14px; color: gray;">העתק/י את הקישור או לחצ/י כדי לבדוק אותו</p>
+    {% endwith %}
+</div>
+<div class="max-w-lg mx-auto rounded-2xl shadow-md p-8 mt-10"
+style="background-color: rgb(240, 248, 255);">
+  <h2 class="text-2xl font-serif text-gray-700 text-center mb-6">
+      הפרטים שלך:
+  </h2>
+  <p style="font-size: 14px; color: gray;">אפשר לשנות את פרטי הפרופיל</p>
+  <form method="post" enctype="multipart/form-data" class="space-y-4">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit"
+              class="bg-teal-600 hover:bg-teal-700 text-white px-6 py-2 rounded-xl transition">
+          עדכן
+      </button>
+  </form>
+</div>
+{% endblock %}

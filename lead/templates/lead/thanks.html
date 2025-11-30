@@ -1,0 +1,41 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="he">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>מזל טוב! השמירה הושלמה</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+       
+        @keyframes fadeInScale {
+            0% { opacity: 0; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        .animate-enter {
+            animation: fadeInScale 0.6s ease-out;
+        }
+    </style>
+</head>
+<body dir="rtl" class="bg-gray-50 min-h-screen flex items-center justify-center p-4">
+    
+    <div class="bg-white p-12 md:p-20 rounded-3xl shadow-2xl max-w-xl w-full text-center border-t-[12px] border-teal-500 animate-enter">
+
+        <div class="text-7xl mb-8 text-teal-500 transform hover:scale-110 transition duration-300">
+            ✅
+        </div>
+
+        <h1 class="text-6xl md:text-7xl font-extrabold text-gray-900 mb-6 leading-tight tracking-tight">
+            נשמר בהצלחה!
+        </h1>
+
+        <p class="text-xl md:text-2xl text-gray-600 mb-10 font-medium">
+            פרטי הלקוח נשמרו במערכת בבטחה.
+        </p>
+
+     
+    </div>
+    
+</body>
+</html>

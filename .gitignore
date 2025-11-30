@@ -1,0 +1,51 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+
+# Virtual environments
+venv/
+django_env/
+env/
+.venv/
+
+# Environment files
+.env
+*.env
+
+# Django
+db.sqlite3
+media/
+staticfiles/
+*.log
+
+# Celery
+celerybeat-schedule
+celerybeat.pid
+
+# JetBrains / VSCode
+.idea/
+.vscode/
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# PDF / test files
+*.pdf
+
+# Docker
+*.pid
+docker-compose.override.yml
+
+# Migrations trash (keep real ones!)
+*/migrations/__pycache__/
+*/migrations/*.pyc
+
+# Node (if you ever add front-end build)
+node_modules/
+

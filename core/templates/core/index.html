@@ -1,0 +1,30 @@
+{% extends 'core/base.html' %}
+
+{% block title %}MAZAL-TOV{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-b from-white to-blue-50 flex flex-col items-center justify-center py-12 px-6 text-center">
+
+    <h1 class="text-5xl font-serif text-gray-800 mb-4 tracking-wide">MAZAL-TOV</h1>
+    <p class="text-gray-600 text-lg mb-10">המערכת החכמה לניהול לקוחות, אירועים וחתונות במקום אחד</p>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl">
+        <div class="bg-white rounded-2xl shadow-md p-6">
+            <h2 class="text-xl font-semibold text-teal-700 mb-2">ניהול לקוחות</h2>
+            <p class="text-gray-600">עקוב אחרי כל לקוח, סטטוס העסקה ותאריכים חשובים בצורה חכמה ונוחה.</p>
+        </div>
+        <div class="bg-white rounded-2xl shadow-md p-6">
+            <h2 class="text-xl font-semibold text-teal-700 mb-2">טפסים ומסמכים</h2>
+            <p class="text-gray-600">צור והורד טפסי PDF באופן אוטומטי ושלח ישירות ללקוחות בלחיצת כפתור.</p>
+        </div>
+        <div class="bg-white rounded-2xl shadow-md p-6">
+            <h2 class="text-xl font-semibold text-teal-700 mb-2">טופס חכם ללקוחות</h2>
+            <p class="text-gray-600">
+                שלח ללקוח קישור ייחודי שדרכו הוא יכול למלא את כל פרטיו בקלות.  
+                המידע נשמר אוטומטית במערכת — בלי צורך בהקלדה כפולה.
+            </p>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

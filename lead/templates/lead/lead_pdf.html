@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="utf-8">
+    <style>
+        body {
+            font-family: "Arial", sans-serif;
+            direction: rtl;
+            text-align: right;
+            padding: 30px;
+            background-color: #ffffff;
+        }
+    
+        h1, h2 {
+            color: #000;
+            border-bottom: 2px solid #000;
+            padding-bottom: 6px;
+            margin-bottom: 12px;
+        }
+    
+        .section {
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin-bottom: 25px;
+            background-color: #fafafa;
+        }
+    
+        .field {
+            margin-bottom: 10px;
+        }
+    
+        .label {
+            font-weight: bold;
+            color: #333;
+        }
+    
+        table {
+            width: 100%;
+            border-spacing: 0;
+            margin-bottom: 10px;
+        }
+    
+        td {
+            vertical-align: top;
+            padding: 5px;
+        }
+    
+        .contact-card {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: #fff;
+        }
+    
+        .no-data {
+            color: #777;
+            font-style: italic;
+        }
+    </style>
+    
+</head>
+<body>
+    <h1 class="main-title">{{ userprofile.name }} ,צלם.</h1>
+    <p>{{ userprofile.phone }} | {{ userprofile.email }}</p>
+    
+    <h2>הזמנת צילום</h2>
+    
+    <div class="section">
+        <h2>פרטי בעלי השמחה</h2>
+    
+        <table>
+            <tr>
+                <td>
+                    {% if bride_contact %}
+                    <div class="contact-card">
+                        <h3>👰 כלה ({{ bride_contact.first_name }} {{ bride_contact.second_name }})</h3>
+                        <p><span class="label">טלפון:</span> {{ bride_contact.phone }}</p>
+                        <p><span class="label">אימייל:</span> {{ bride_contact.email }}</p>
+                        <p><span class="label">כתובת:</span> {{ bride_contact.concat_address }}</p>
+                    </div>
+                    {% endif %}
+                </td>
+    
+                <td>
+                    {% if groom_contact %}
+                    <div class="contact-card">
+                        <h3>🤵 חתן ({{ groom_contact.first_name }} {{ groom_contact.second_name }})</h3>
+                        <p><span class="label">טלפון:</span> {{ groom_contact.phone }}</p>
+                        <p><span class="label">אימייל:</span> {{ groom_contact.email }}</p>
+                    </div>
+                    {% endif %}
+                </td>
+            </tr>
+        </table>
+    </div>
+    
+    <div class="section">
+        <h2>פרטי האירוע</h2>
+    
+        <table>
+            <tr>
+                <td>
+                    <p class="label">יום האירוע:</p>
+                    <p>{{ lead.get_day_display }}</p>
+    
+                    <p class="label">תאריך לועזי:</p>
+                    <p>{{ lead.date_gregorian }}</p>
+    
+                    <p class="label">תאריך עברי:</p>
+                    <p>{{ lead.hebrew_day }} {{ lead.get_hebrew_month_display }} {{ lead.hebrew_year }}</p>
+                </td>
+    
+                <td>
+                    <p class="label">אולם:</p>
+                    <p>{{ lead.hall }}</p>
+    
+                    <p class="label">כתובת אולם:</p>
+                    <p>{{ lead.address }}</p>
+                </td>
+            </tr>
+        </table>
+    </div>
+    
+    <div class="section">
+        <h2>👥 אנשי קשר נוספים</h2>
+    
+        {% with lead.contacts.all as contacts %}
+        {% for contact in contacts %}
+            {% if contact.role != "כלה" and contact.role != "חתן"%}
+            <div class="contact-card">
+                {% if contact.role %}
+                <p class="label">{{ contact.role }}:</p>
+                {% endif %}
+                <p>{{ contact.first_name }} {{ contact.second_name }}</p>
+                <p><span class="label">טלפון:</span> {{ contact.phone }}</p>
+                <p><span class="label">אימייל:</span> {{ contact.email }}</p>
+            </div>
+            {% endif %}
+        {% empty %}
+            <p class="no-data">אין אנשי קשר נוספים</p>
+        {% endfor %}
+        {% endwith %}
+    </div>
+    
+    {% if lead.custom_fields %}
+    <div class="section">
+        <h2>חבילת עסקה</h2>
+    
+        <table>
+            {% for key, field in fields.items %}
+            <tr>
+                <td class="label">{{ field.label }}:</td>
+                <td>{{ field.value|default:"—" }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    {% endif %}
+    
+
+</body>
+</html>
