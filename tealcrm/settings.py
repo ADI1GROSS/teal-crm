@@ -160,4 +160,10 @@ SECURE_HSTS_SECONDS = 31536000
 SECURE_SSL_REDIRECT = True
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
+CSRF_TRUSTED_ORIGINS = [
+    "https://*.up.railway.app",
+    "https://*.railway.app",
+    "https://teal-crm-production-40a1.up.railway.app",
+    "https://teal-crm-production-40a1.railway.app",
+]
 
