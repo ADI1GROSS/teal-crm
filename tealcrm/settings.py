@@ -41,7 +41,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ['teal-crm-production-40a1.up.railway.app']
 
 LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = 'login'
@@ -158,6 +158,7 @@ CELERY_BROKER_URL = 'redis://redis_broker:6379/0'
 CELERY_RESULT_BACKEND = 'redis://redis_broker:6379/0'
 SECURE_HSTS_SECONDS = 31536000
 SECURE_SSL_REDIRECT = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 CSRF_TRUSTED_ORIGINS = [
