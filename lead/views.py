@@ -64,9 +64,7 @@ def leads_list(request):
     
 
     leads = list(leads)
-    leads.sort(
-        key=lambda l: (l.hebrew_year, l.hebrew_month))
-
+    
     # deviding leads by the month of the event
     grouped_leads = {}
     for key, group in groupby(
