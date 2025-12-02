@@ -10,4 +10,3 @@ redis
 dj-database-url
 gunicorn
 cloudinary
-cloudinary-storage 
