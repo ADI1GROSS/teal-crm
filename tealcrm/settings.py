@@ -3,6 +3,10 @@ from pathlib import Path
 import os
 from dotenv import load_dotenv
 import dj_database_url
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+
 
 load_dotenv()
 
@@ -106,6 +110,14 @@ DATABASES = {
         conn_max_age=600,
         ssl_require=False
     )
+}
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
+    'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
+    'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
 }
 
 # Password validation
