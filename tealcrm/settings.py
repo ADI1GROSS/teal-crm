@@ -190,4 +190,5 @@ CSRF_TRUSTED_ORIGINS = [
     "https://teal-crm-production-40a1.up.railway.app",
     "https://teal-crm-production-40a1.railway.app",
 ]
+print("Cloudinary loaded:", cloudinary.config().cloud_name)
 
