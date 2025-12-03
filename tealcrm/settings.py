@@ -111,6 +111,7 @@ DATABASES = {
 }
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+STATICFILES_STORAGE = 'cloudinary_storage.storage.StaticHashedCloudinaryStorage'
 MEDIA_URL = '/media/'
 cloudinary.config( 
     cloud_name=os.getenv("CLOUDINARY_CLOUD_NAME"),
