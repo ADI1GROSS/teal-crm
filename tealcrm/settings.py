@@ -137,7 +137,7 @@ CLOUDINARY_STORAGE = {
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 STATICFILES_STORAGE = 'cloudinary_storage.storage.StaticHashedCloudinaryStorage'
 
-MEDIA_URL = '/media/'
+
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # Password validation
