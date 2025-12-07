@@ -66,8 +66,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'cloudinary_storage',
     'cloudinary',
+    'cloudinary_storage',
     'rest_framework',
     'core',
     'lead',
@@ -108,13 +108,23 @@ WSGI_APPLICATION = 'tealcrm.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-DATABASES = {
-    'default': dj_database_url.config(
-        default=os.getenv("DATABASE_URL"),
-        conn_max_age=600,
-        ssl_require=False
-    )
-}
+if os.getenv("DATABASE_URL"):
+    # בענן (Railway) - יש DATABASE_URL
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=os.getenv("DATABASE_URL"),
+            conn_max_age=600,
+            ssl_require=False
+        )
+    }
+else:
+    # בלוקאל - אין DATABASE_URL → משתמשים ב-SQLite
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
+    }
 
 STATIC_URL = '/static/'
 
