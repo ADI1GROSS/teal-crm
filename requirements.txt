@@ -10,4 +10,4 @@ redis
 dj-database-url
 gunicorn
 django-storages
-google-cloud-storage
+boto3
