@@ -10,7 +10,7 @@ class Userprofile(models.Model):
     name = models.CharField(verbose_name="שם", max_length=100, blank=True, null=True)
     email = models.EmailField(verbose_name="אימייל", default='')
     phone = models.CharField(verbose_name="טלפון", max_length=50, default='')
-    regulations_document = models.FileField(upload_to='regulations/',blank=True, null=True, storage=MediaCloudinaryStorage(resource_type='raw',  type_='upload'),)
+    regulations_document = models.FileField(upload_to='regulations/',blank=True, null=True)
 
 
     def __str__(self):

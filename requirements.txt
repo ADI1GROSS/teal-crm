@@ -9,5 +9,5 @@ celery
 redis
 dj-database-url
 gunicorn
-cloudinary
-django-cloudinary-storage
+django-storages
+google-cloud-storage
