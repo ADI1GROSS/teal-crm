@@ -1,7 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
 import uuid
-from cloudinary_storage.storage import MediaCloudinaryStorage
 
 class Userprofile(models.Model):
     user = models.OneToOneField(User, related_name='userprofile', on_delete=models.CASCADE)
