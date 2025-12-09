@@ -39,7 +39,11 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['teal-crm-production-40a1.up.railway.app']
+ALLOWED_HOSTS = ['teal-crm-production-40a1.up.railway.app',
+                 '.railway.app',
+                 '127.0.0.1',
+                 'localhost',
+                ]
 
 LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = 'login'

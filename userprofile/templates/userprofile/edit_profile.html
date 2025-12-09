@@ -10,7 +10,7 @@
   
     <div style="margin-top: 10px; padding: 10px; background-color: #f9f9f9; border-radius: 8px; border: 1px solid #ddd;">
       <a href="{% url 'add_lead_public' request.user.userprofile.invite_token %}" target="_blank" style="display: block; color: #007bff; text-decoration: none; word-break: break-all; direction: ltr;">
-         {{ request.build_absolute_uri|slice:":-1" }}{% url 'add_lead_public' request.user.userprofile.invite_token %}
+        {{ request.scheme }}://{{ request.get_host }}{% url 'add_lead_public' request.user.userprofile.invite_token %}
       </a>
     </div>
   
