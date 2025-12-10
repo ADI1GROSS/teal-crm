@@ -34,7 +34,10 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-# 6. חשיפת הפורט ופקודת ההפעלה
+RUN python manage.py collectstatic --noinput
+
+RUN python manage.py migrate
+
 EXPOSE 8000
 
 CMD ["gunicorn", "tealcrm.wsgi:application", "--bind", "0.0.0.0:8000"]
