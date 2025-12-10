@@ -10,12 +10,24 @@ logger = logging.getLogger(__name__)
 
 @shared_task
 def send_lead_pdf_task(lead_id, user_id, chosen_email):
+    # 1. בדיקת ה-Lead בנפרד
     try:
         lead = Lead.objects.get(pk=lead_id)
+    except Lead.DoesNotExist:
+        logger.error(f"Task DB error: Lead ID {lead_id} does not exist.")
+        return "Failed: Lead Not Found" # ⬅️ הודעה ספציפית
+
+    # 2. בדיקת ה-Userprofile בנפרד
+    try:
         userprofile = Userprofile.objects.get(user_id=user_id)
+    except Userprofile.DoesNotExist:
+        logger.error(f"Task DB error: Userprofile for User ID {user_id} does not exist.")
+        return "Failed: Userprofile Not Found" # ⬅️ הודעה ספציפית
+
     except Exception as e:
-        logger.error(f"Task DB error: {e}")
-        return "Failed: DB error"
+         # לכסות שגיאות DB אחרות (כמו בעיית חיבור)
+         logger.error(f"Task DB error (Other): {e}")
+         return "Failed: DB error (Other)"
 
     # בדיוק כמו ב-view
     bride_contact = lead.contacts.filter(role="כלה").first()
