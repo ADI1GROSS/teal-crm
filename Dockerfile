@@ -6,8 +6,6 @@ FROM python:3.11-slim-bullseye
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-# 3. התקנת תלויות מערכת חיצוניות ל-WeasyPrint:
-# apt-get install הוא המנהל חבילות של לינוקס.
 RUN apt-get update && \
     apt-get install -y \
     libxml2-dev \
@@ -17,14 +15,15 @@ RUN apt-get update && \
     libpango-1.0-0 \
     libpangocairo-1.0-0 \
     libgdk-pixbuf-2.0-0 \
-    # התלויות הקריטיות ל-WeasyPrint:
-    pango-view \
+    # התלויות הקריטיות שדרשת:
     libcairo2-dev \
     libpango1.0-dev \
     pkg-config \
+    # ⚠️ הסרנו את pango-view 
+    # 💡 הוספת libgirepository1.0-dev למקרה הצורך
+    libgirepository1.0-dev \
     # ניקוי כדי להקטין את גודל התמונה
     && apt-get clean && rm -rf /var/lib/apt/lists/*
-
 # 4. הגדרת סביבת העבודה (שאר הקוד הקיים)
 WORKDIR /usr/src/app
 
