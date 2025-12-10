@@ -1,28 +1,40 @@
-FROM python:3.11
+# 1. השתמש בגרסת Python גדולה יותר (לא slim) שמגיעה עם תמיכה טובה יותר.
+# הבחירה ב-3.11-slim-buster/bullseye היא לרוב טובה, אבל נשתמש ב-Bullseye כדי לוודא שיש תמיכה עדכנית.
+FROM python:3.11-slim-bullseye
 
-WORKDIR /app
+# 2. הגדרת משתני סביבה
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
 
-RUN apt-get update && apt-get install -y \
-    build-essential \
+# 3. התקנת תלויות מערכת חיצוניות ל-WeasyPrint:
+# apt-get install הוא המנהל חבילות של לינוקס.
+RUN apt-get update && \
+    apt-get install -y \
+    libxml2-dev \
+    libxslt1-dev \
+    libffi-dev \
     libcairo2 \
-    libcairo2-dev \
     libpango-1.0-0 \
-    libpango1.0-dev \
     libpangocairo-1.0-0 \
     libgdk-pixbuf-2.0-0 \
-    libgdk-pixbuf-2.0-dev \
-    shared-mime-info \
-    fonts-dejavu \
-    libffi-dev \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+    # התלויות הקריטיות ל-WeasyPrint:
+    pango-view \
+    libcairo2-dev \
+    libpango1.0-dev \
+    pkg-config \
+    # ניקוי כדי להקטין את גודל התמונה
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-ENV WEASYPRINT_CAIRO_CFF=1
+# 4. הגדרת סביבת העבודה (שאר הקוד הקיים)
+WORKDIR /usr/src/app
 
+# 5. העתקת קבצי הפרויקט
 COPY requirements.txt .
-
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-CMD ["sh", "-c", "python manage.py collectstatic --noinput && gunicorn tealcrm.wsgi:application --bind 0.0.0.0:8000"]
+# 6. חשיפת הפורט ופקודת ההפעלה
+EXPOSE 8000
+
+CMD ["gunicorn", "tealcrm.wsgi:application", "--bind", "0.0.0.0:8000"]
