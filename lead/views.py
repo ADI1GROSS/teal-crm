@@ -10,10 +10,9 @@ from .models import Lead, Contact
 from userprofile.models import Userprofile
 from django.template.loader import render_to_string
 from django.http import HttpResponse
-from weasyprint import HTML
-from django.core.mail import send_mail
-from django.core.mail import EmailMessage
-from rest_framework import viewsets, permissions
+from weasyprint import HTML , CSS
+from django.templatetags.static import static
+from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 from .serializers import LeadSerializer, ContactSerializer
 from lead.tasks import send_lead_pdf_task
@@ -329,15 +328,12 @@ def lead_pdf(request, pk):
         messages.error(request, "הלקוח לא נמצא")
         return redirect("leads_list")
 
-    # שליפת כל המשתנים שה-HTML צריך
-    userprofile = request.user.userprofile if hasattr(request.user, "userprofile") else None
+    userprofile = getattr(request.user, "userprofile", None)
 
     bride_contact = lead.contacts.filter(role="כלה").first()
     groom_contact = lead.contacts.filter(role="חתן").first()
 
     custom_fields = get_client_fields(request.user, lead)
-    
-
 
     try:
         html_string = render_to_string('lead/lead_pdf.html', {
@@ -348,14 +344,18 @@ def lead_pdf(request, pk):
             "fields": custom_fields,
         })
 
-        pdf = HTML(string=html_string).write_pdf()
+        pdf = HTML(
+            string=html_string,
+            base_url=request.build_absolute_uri()  # ✔️ חובה
+        ).write_pdf()
+
     except Exception as e:
         print("PDF ERROR:", e)
         messages.error(request, "לא ניתן ליצור PDF כרגע")
         return redirect("leads_list")
 
     response = HttpResponse(pdf, content_type="application/pdf")
-    response["Content-Disposition"] = f'attachment; filename=\"lead_{lead.id}.pdf\"'
+    response["Content-Disposition"] = f'attachment; filename="lead_{lead.id}.pdf"'
     return response
 
 def send_client_email(request, pk):
