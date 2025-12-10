@@ -137,7 +137,7 @@ AWS_S3_OBJECT_PARAMETERS = {
 AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com"
 STATICFILES_LOCATION = "static"
 MEDIAFILES_LOCATION = "media"
-
+STATIC_ROOT = BASE_DIR / "staticfiles"
 STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/static/"
 MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
 # Password validation
