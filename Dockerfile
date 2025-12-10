@@ -8,21 +8,22 @@ ENV PYTHONUNBUFFERED 1
 
 RUN apt-get update && \
     apt-get install -y \
+    # תלויות קריטיות לבנייה:
     libxml2-dev \
     libxslt1-dev \
     libffi-dev \
-    libcairo2 \
-    libpango-1.0-0 \
-    libpangocairo-1.0-0 \
-    libgdk-pixbuf-2.0-0 \
-    # התלויות הקריטיות שדרשת:
+    pkg-config \
+    # תלויות גרפיקה וגופנים (Pango & Cairo):
     libcairo2-dev \
     libpango1.0-dev \
-    pkg-config \
-    # ⚠️ הסרנו את pango-view 
-    # 💡 הוספת libgirepository1.0-dev למקרה הצורך
-    libgirepository1.0-dev \
-    # ניקוי כדי להקטין את גודל התמונה
+    libgdk-pixbuf2.0-dev \
+    # תלויות רינדור/תמיכת תמונה:
+    libjpeg-dev \
+    zlib1g-dev \
+    # הוספת חבילת גופנים כללית (Critical for Hebrew/non-Latin):
+    fonts-noto-cjk \
+    # 💡 זה אמור לכסות את כל התלויות של WeasyPrint
+    # ניקוי:
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 # 4. הגדרת סביבת העבודה (שאר הקוד הקיים)
 WORKDIR /usr/src/app
