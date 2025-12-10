@@ -173,9 +173,10 @@ USE_TZ = True
 FILE_CHARSET = 'utf-8'
 DEFAULT_CHARSET = 'utf-8'
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.2/howto/static-files/
-
+REDIS_HOST = os.environ.get("REDISHOST")
+REDIS_PORT = os.environ.get("REDISPORT")
+CELERY_BROKER_URL = os.environ.get("REDIS_URL")
+CELERY_RESULT_BACKEND = os.environ.get("REDIS_URL")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
