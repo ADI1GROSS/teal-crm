@@ -11,6 +11,7 @@ from userprofile.models import Userprofile
 from django.template.loader import render_to_string
 from django.http import HttpResponse
 from weasyprint import HTML , CSS
+from django.core.mail import EmailMessage
 from django.templatetags.static import static
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
@@ -359,38 +360,62 @@ def lead_pdf(request, pk):
     return response
 
 def send_client_email(request, pk):
-    try:
-        lead = Lead.objects.get(pk=pk)
-    except Lead.DoesNotExist:
-        messages.error(request, "הלקוח לא נמצא")
-        return redirect("leads_list")
+    
+    lead = get_object_or_404(Lead, pk=pk)
 
-    try:
-        userprofile = Userprofile.objects.get(user=request.user)
-    except Exception as e:
-        logger.error(f"Userprofile error: {e}")
-        messages.error(request, "שגיאה בטעינת פרטי המשתמש")
-        return redirect("leads_list")
+    userprofile = get_object_or_404(Userprofile, user=request.user)
 
-    try:
-        emails = [
-            (c.email, f"{c.first_name} {c.second_name}")
-            for c in lead.contacts.all() if c.email
-        ]
-    except Exception as e:
-        logger.error(f"Contact email error: {e}")
-        messages.error(request, "שגיאה בטעינת אנשי הקשר")
-        return redirect("leads_list")
+    emails = [
+        (c.email, f"{c.first_name} {c.second_name}")
+        for c in lead.contacts.all() if c.email
+    ]
 
     if request.method == "POST":
+        chosen_email = request.POST.get("chosen_email")
+
         try:
-            chosen_email = request.POST.get("chosen_email")
-            send_lead_pdf_task.delay(lead.id, request.user.id, chosen_email)
-            messages.success(request, "המסמך נשלח בהצלחה 🚀")
+            template_fields = userprofile.fields or {}
+            fields = {}
+            for key, info in template_fields.items():
+                value = (lead.custom_fields or {}).get(key, info.get("default"))
+                fields[key] = {
+                    "label": info.get("label"),
+                    "type": info.get("type"),
+                    "value": value,
+                }
+
+            html_string = render_to_string('lead/lead_pdf.html', {
+                "lead": lead,
+                "userprofile": userprofile,
+                "bride_contact": lead.contacts.filter(role="כלה").first(),
+                "groom_contact": lead.contacts.filter(role="חתן").first(),
+                "fields": fields,
+            })
+
+            pdf_file = HTML(string=html_string).write_pdf()
+
         except Exception as e:
-            logger.error(f"Email sending error: {e}")
-            messages.error(request, "שגיאה בשליחת המייל")
-        return redirect('leads_list')
+            print("PDF ERROR:", e)
+            messages.error(request, "לא ניתן ליצור PDF כרגע.")
+            return redirect("leads_list")
+
+        try:
+            email = EmailMessage(
+                subject="הזמנת צילום",
+                body=f"מצורף קובץ ההזמנה שלכם.",
+                from_email=None,
+                to=[chosen_email],
+            )
+
+            email.attach(f'lead_{lead.id}.pdf', pdf_file, "application/pdf")
+            email.send()
+
+            messages.success(request, "המייל נשלח בהצלחה! ✉️")
+        except Exception as e:
+            print("EMAIL ERROR:", e)
+            messages.error(request, "שליחת המייל נכשלה.")
+        
+        return redirect("leads_list")
 
     return render(request, "lead/send_email_choice.html", {
         "lead": lead,
