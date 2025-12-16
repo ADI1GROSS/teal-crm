@@ -1,4 +1,5 @@
 from pathlib import Path
+import resend
 import os
 from dotenv import load_dotenv
 import dj_database_url
@@ -183,18 +184,10 @@ CELERY_RESULT_BACKEND = os.environ.get("REDIS_URL")
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = os.getenv('EMAIL_HOST', '')
-EMAIL_PORT = int(os.getenv('EMAIL_PORT', 587))
 
-# ⬅️ שמור על TLS (כברירת מחדל, 587)
-EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', 'True') == 'True'
 
-# ⬅️ הוסף תמיכה ב-SSL (עבור פורט 465)
-EMAIL_USE_SSL = os.getenv('EMAIL_USE_SSL', 'False') == 'True'
-EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', '')
-EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', '')
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+RESEND_API_KEY = os.getenv("RESEND_API_KEY")
+resend.api_key = RESEND_API_KEY
 SECURE_HSTS_SECONDS = 31536000
 SECURE_SSL_REDIRECT = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')

@@ -1,10 +1,13 @@
 from celery import shared_task
-from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
 from lead.models import Lead
+from celery import shared_task
 from userprofile.models import Userprofile
 from weasyprint import HTML
 import logging
+import resend
+import base64
+
 
 logger = logging.getLogger(__name__)
 
@@ -54,25 +57,25 @@ def send_lead_pdf_task(lead_id, user_id, chosen_email):
         })
 
         pdf_file = HTML(string=html_string).write_pdf()
+        pdf_base64 = base64.b64encode(pdf_file).decode("utf-8")
     except Exception as e:
         logger.error(f"PDF creation failed: {e}")
         return "Failed: PDF error"
 
-    subject = 'הזמנת צילום'
-    message = (
-        f'מזל טוב! תודה שבחרתם בשירות של {userprofile.user.username}. '
-        f'מצורף קובץ ההזמנה שלכם.'
-    )
 
     try:
-        email = EmailMessage(
-            subject=subject,
-            body=message,
-            from_email=None,
-            to=[chosen_email],
-        )
-        email.attach(f'lead_{lead.id}.pdf', pdf_file, 'application/pdf')
-        email.send()
+        resend.Emails.send({
+            "from": "Mazal Tov CRM <no-reply@mazaltovcrm.com>",
+            "to": chosen_email,
+            "subject": "הזמנת צילום – מצורף קובץ",
+            "html": "<p>מצורף קובץ ההזמנה שלכם.</p>",
+            "attachments": [
+                {
+                    "filename": f"lead_{lead.id}.pdf",
+                    "content": pdf_base64,
+                }
+            ],
+        })
         return "Email sent"
     except Exception as e:
         logger.error(f"Email sending failed: {e}")
