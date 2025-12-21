@@ -73,10 +73,10 @@
                 <td>
                     {% if bride_contact %}
                     <div class="contact-card">
-                        <h3>👰 כלה ({{ bride_contact.first_name }} {{ bride_contact.second_name }})</h3>
-                        <p><span class="label">טלפון:</span> {{ bride_contact.phone }}</p>
-                        <p><span class="label">אימייל:</span> {{ bride_contact.email }}</p>
-                        <p><span class="label">כתובת:</span> {{ bride_contact.concat_address }}</p>
+                        <h3> כלה ({{ bride_contact.first_name }} {{ bride_contact.second_name }})</h3>
+                        <p> {{ bride_contact.phone }} <span class="label">טלפון:</span></p>
+                        <p> {{ bride_contact.email }} <span class="label">אימייל:</span></p>
+                        <p> {{ bride_contact.concat_address }} <span class="label">כתובת:</span></p>
                     </div>
                     {% endif %}
                 </td>
@@ -84,9 +84,9 @@
                 <td>
                     {% if groom_contact %}
                     <div class="contact-card">
-                        <h3>🤵 חתן ({{ groom_contact.first_name }} {{ groom_contact.second_name }})</h3>
-                        <p><span class="label">טלפון:</span> {{ groom_contact.phone }}</p>
-                        <p><span class="label">אימייל:</span> {{ groom_contact.email }}</p>
+                        <h3> חתן ({{ groom_contact.first_name }} {{ groom_contact.second_name }})</h3>
+                        <p> {{ groom_contact.phone }} <span class="label">טלפון:</span></p>
+                        <p> {{ groom_contact.email }} <span class="label">אימייל:</span></p>
                     </div>
                     {% endif %}
                 </td>

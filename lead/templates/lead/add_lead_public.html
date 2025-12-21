@@ -136,10 +136,15 @@
                                 </div>
                             </div>
                         </div>
-
-                        <div class="flex-1">
-                            <label for="{{ form.date_gregorian.id_for_label }}" class="block font-semibold mb-1" style="color: var(--color-secondary);">תאריך לועזי:</label>
-                            {{ form.date_gregorian }}
+                        <div class="md:col-span-2 flex flex-col md:flex-row gap-4 mb-4">
+                            <div class="flex-1">
+                                <label for="{{ form.date_gregorian.id_for_label }}" class="block font-semibold mb-1" style="color: var(--color-secondary);">תאריך לועזי:</label>
+                                {{ form.date_gregorian }}
+                            </div>
+                            <div class="flex-1">
+                                <label for="{{ form.day.id_for_label }}" class="block font-semibold mb-1" style="color: var(--color-secondary);">יום האירוע:</label>
+                                {{ form.day }}
+                            </div>
                         </div>
                         
                         <div class="md:col-span-2 pt-4 border-t mt-4 flex flex-col md:flex-row gap-4 mb-4" style="border-color: #E0E0E0;">
