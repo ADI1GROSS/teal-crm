@@ -132,8 +132,8 @@
                 <p class="label">{{ contact.role }}:</p>
                 {% endif %}
                 <p>{{ contact.first_name }} {{ contact.second_name }}</p>
-                <p><span class="label">טלפון:</span> {{ contact.phone }}</p>
-                <p><span class="label">אימייל:</span> {{ contact.email }}</p>
+                <p> {{ contact.phone }} <span class="label">טלפון:</span></p>
+                <p> {{ contact.email }} <span class="label">אימייל:</span></p>
             </div>
             {% endif %}
         {% empty %}
