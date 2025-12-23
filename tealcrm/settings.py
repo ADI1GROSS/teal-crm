@@ -196,10 +196,10 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 CSRF_TRUSTED_ORIGINS = [
+    "https://mazaltovcrm.com",
+    "https://www.mazaltovcrm.com",
     "https://*.up.railway.app",
     "https://*.railway.app",
-    "https://teal-crm-production-40a1.up.railway.app",
-    "https://teal-crm-production-40a1.railway.app",
 ]
 
 
