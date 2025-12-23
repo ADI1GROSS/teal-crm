@@ -14,19 +14,19 @@ class UserprofileForm(forms.ModelForm):
             'regulations_document': 'תקנון'
         }
 class CustomSignupForm(UserCreationForm):
-    phone = forms.CharField(max_length=20, required=False, label='טלפון')
-    #למה אין כאן מייל
-
     class Meta:
         model = User
-        fields = ('username', 'email', 'password1', 'password2', 'phone')
+        fields = ("username", "password1", "password2")
 
-    def save(self, commit=True):
-        user = super().save(commit=commit)
-        if commit:
-            Userprofile.objects.create(
-                user=user,
-                email=self.cleaned_data.get('email'),
-                phone=self.cleaned_data.get('phone'),
-            )
-        return user
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs.update({
+                "class": "w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+            })
+        self.fields["password1"].widget.attrs["placeholder"] = "סיסמה"
+        self.fields["password2"].widget.attrs["placeholder"] = "אימות סיסמה"
+        self.fields["username"].widget.attrs["placeholder"] = "שם משתמש"
+        self.fields["username"].help_text = "שם המשתמש ישמש להתחברות למערכת"
+        self.fields["password1"].help_text = "לפחות 8 תווים, לא סיסמה נפוצה, ולא מספרים בלבד"
+        self.fields["password2"].help_text = "יש להזין את אותה סיסמה שוב לאימות"

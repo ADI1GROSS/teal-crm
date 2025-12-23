@@ -201,5 +201,6 @@ CSRF_TRUSTED_ORIGINS = [
     "https://*.up.railway.app",
     "https://*.railway.app",
 ]
-
+CSRF_COOKIE_DOMAIN = ".mazaltovcrm.com"
+SESSION_COOKIE_DOMAIN = ".mazaltovcrm.com"
 
