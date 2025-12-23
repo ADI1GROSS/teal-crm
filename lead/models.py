@@ -77,6 +77,6 @@ class Contact(models.Model):
     concat_address = models.CharField(verbose_name="כתובת", max_length=50, blank=True, null=True)
 
     def __str__(self):
-    full_name = f"{self.first_name} {self.second_name}".strip()
-    return f"{full_name} ({self.role})"
+        full_name = f"{self.first_name} {self.second_name}".strip()
+        return f"{full_name} ({self.role})"
 
